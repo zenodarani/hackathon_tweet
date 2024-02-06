@@ -1,0 +1,17 @@
+Hackaton 2 Report
+During course of the project, we were tasked with developing a few tasks starting from two datasets regarding panic related tweet.
+We mainly had three different duties: the first one was to make a descriptive analysis about a few topics related to the data.
+
+--descriptive analysis—
+
+Next, we were asked to experiment with some unsupervised techniques such as featurization, clustering and PCA.
+--unsupervised—
+
+The last data science task was to create a model in order to classify a tweet into one of the following categories: Person Panicking (PP), Panic-Other (PO), or Unrelated (UN) to panic.
+We originally trained the model on the model-annotated dataset, as it had over 12000 rows it would provide enough information to the model to perform well. We also used a subset of that dataset as test set, and the performances were around 0.94-0.95 for both a Softmax Regression and a Random Forest.
+As the PP class had a much lower representation (around 7% of the dataset) than the other two, it was subjected to smaller scores (we evaluated each model using precision, recall, accuracy and F1-score), thus we tried to oversample that class with Imbalanced-learn, however the overall performance of the models was worse.
+Once the unsupervised task was completed, we decided to try to use the newly created features to train our model, we thus created a dataset that had both LIWC features and unsupervised ones. The F1-score of the Softmax model increased from 0.94 to 0.97, Random Forest from 0.95 to 0.96. Like that we obtained a very good model, also quite simple in the form of a linear model. 
+As we were only using the model-annotated dataset, we wanted to try how our models performed after adding the other dataset to the mix; first we simply concatenated the new dataset with the training set, then we simply shuffled the data so the model would both be trained and tested on data from both sets. The performance of both models dropped by 0.01. It made sense as the human-annotated data are supposedly the tweets that were harder to classify, but the performance was good enough; like this we were able to use both provided datasets, and also use some of the knowledge obtained from the unsupervised task, obtaining a more concrete project.
+Overall, the best performing model was the linear one, so we choose it as the model that the API will be linked to.
+
+Finally, we had to create a frontend application to let users interact with the data and the predictions themselves. The idea is that by showing the tweet text to the user, and the prediction made by the model, one could read through the text and decide if the prediction made sense, if needed they could modify it, and then get a modified file as output.
