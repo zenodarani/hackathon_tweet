@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackathon 2</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .sticky-buttons {
+            position: fixed;
+            bottom: 20px; /* Add 20px margin from the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            width: 30%;
+            padding: 10px;
+            background-color: white;
+        }
+
+        /* Set custom column widths */
+        th:first-child,
+        td:first-child {
+            width: 70%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2),
+        th:nth-child(3),
+        td:nth-child(3),
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 10%;
+        }
+
+        /* Center radio buttons */
+        td:nth-child(2),
+        td:nth-child(3),
+        td:nth-child(4) {
+            text-align: center;
+        }
+
+        
+    </style>
+</head>
+<body class="bg-light d-flex flex-column" style="min-height: 100vh;">
+    <div class="container mt-5 flex-grow-1">
+        <h1 class="mb-4 text-center">Hackathon 2</h1>
+        <form id="exportForm" method="post">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr class="text-center">
+                        <th>Text</th>
+                        <th>PP</th>
+                        <th>PO</th>
+                        <th>UN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for text, row_index, labels in data %}
+                        <tr>
+                            <td name="{{ row_index }}_text">{{ emoji.emojize(text) }}</td>
+                            <input type="hidden" name="{{ row_index }}_hidden_text" value="{{ text }}">
+                            <td class="text-center"><input type="radio" name="{{ row_index }}_label" value="PP" {% if labels.label_1 %}checked{% endif %}></td>
+                            <td class="text-center"><input type="radio" name="{{ row_index }}_label" value="PO" {% if labels.label_2 %}checked{% endif %}></td>
+                            <td class="text-center"><input type="radio" name="{{ row_index }}_label" value="UN" {% if labels.label_3 %}checked{% endif %}></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div style="margin: 35px;"></div>
+        <div class="sticky-buttons">
+            <button type="button" class="btn btn-outline-primary" style="width: 50%;" onclick="exportData()">Export</button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary" style="width: 50%;">Back to Index</a>
+        </div>
+    </form>
+
+    <!-- Include Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        async function exportData() {
+            const formElement = document.getElementById('exportForm');
+            const formData = new FormData(formElement);
+    
+            try {
+                const response = await fetch('/export', {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                if (response.ok) {
+                    // Handle success, show a success message
+                    alert('Export successful');
+                } else {
+                    // Handle error, show an error message
+                    alert('Export failed');
+                }
+            } catch (error) {
+                // Handle network or other errors, show an error message
+                alert('Error during export: ' + error.message);
+            }
+        }
+    </script>
+    
+</body>
+</html>
