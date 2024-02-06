@@ -1,0 +1,19 @@
+The first task was to perform a Descriptive Analysis of the dataset annotated by the Annotators. We started by looking at the predictions made by the single annotator, and we found out that the most represented class is the 'Unrelated', the second is the 'Panic Others', and last the 'Person Panicking'. There is also a third class that is represented by the '?' that represents an unanswered prediction.
+
+Then we wanted to analyse when the majority vote has no majority. The proportion of non majority is of 168/521 (32%). By doing a quick random forest predicting if the majority vote has a majority we extracted the following top 10 of the most important features:
+- Physical 2.5%
+- WPS 2.1%
+- emo_anx 1.9%
+- health 1.8%
+- allure 1.8%
+- tone_neg 1.8%
+- emotion 1.7%
+- Dic 1.7%
+- BigWords 1.7%
+- Analytic 1.7%
+From this result, we can conclude that no singular feature characterizes the non-majority result.
+
+Afterward, we analyzed the consistency of the annotators between the two rounds (Note that round 2 has 308 entries and round 1 has 213). We plotted the proportions with a stacked barplot. Only two annotators (A3 and A4) had similar proportions in the number of predictions between the two rounds.
+
+Finally, we plotted the class distribution for the more important features to predict the majority vote. 
+
