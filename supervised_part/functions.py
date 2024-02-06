@@ -1,8 +1,11 @@
+import pandas as pd
+
 
 def model(data):
     import pickle
     import pandas as pd
     
+    data.drop(['text','Segment'],axis=1,inplace=True)
 
     if 'majority_vote' in data.columns:
         data.rename({'majority_vote':'model_unanimous'},axis=1, inplace=True)
@@ -30,10 +33,13 @@ def model(data):
     X.reset_index(drop=True,inplace=True)
 
     X = pd.concat([df_tfidfvect, X], axis=1)
+
+    return reg.predict(X)
+
+
+if __name__ == '__main__':
+    df=pd.read_csv('model_annotations_liwc_h.csv',delimiter=';')
     
-    X_high_variance = thresholder.transform(X)
-    mask = thresholder.get_support(indices=True)
-    feature_names_high_variance = X.columns[mask]
-    X_high_variance = pd.DataFrame(X_high_variance, columns=feature_names_high_variance)
+    print(df.columns)
     
-    return reg.predict(X_high_variance)
+    print(model(df))
