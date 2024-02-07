@@ -12,14 +12,14 @@ def model(data):
         data.drop(['A1','A2','A3','A4','A5','A6','roundID'], axis=1,inplace=True)
 
 
-    with open('models/tfidf_vectorizer.pkl','rb') as f1:
+    with open('supervised_part/models/tfidf_vectorizer.pkl','rb') as f1:
         tfidf=pickle.load(f1)
         
-    with open('models/thresholder.pkl','rb') as f2:
+    with open('supervised_part/models/thresholder.pkl','rb') as f2:
         thresholder=pickle.load(f2)
         
 
-    with open('models/regression_unsup.pkl','rb') as f3:
+    with open('supervised_part/models/regression_unsup.pkl','rb') as f3:
         reg=pickle.load(f3)
         
     text = data['proc_text']
@@ -38,6 +38,8 @@ def model(data):
     mask = thresholder.get_support(indices=True)
     feature_names_high_variance = X.columns[mask]
     X_high_variance = pd.DataFrame(X_high_variance, columns=feature_names_high_variance)
+
+    print(X_high_variance[['home','need','time']])
 
     return reg.predict(X_high_variance)
 
